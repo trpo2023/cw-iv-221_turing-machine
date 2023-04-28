@@ -2,20 +2,34 @@
 
 using namespace std;
 
-int seek_condition_in_file(string str, string condition, int *index)
+int skip_space(string str, int i)
+{
+    while(str[i] == ' ')
+        i++;
+    return i;
+}
+
+int check_number(char c)
+{
+    if(c < 48 || c > 57)
+        return -1;
+    return 0;
+}
+
+int seek_state_in_file(string str, string state, int *index)
 {
     int i = *index;
     int sim = 0;
     i = skip_space(str, i);
-    string condition_fp;
+    string state_fp;
     while(str[i] != ' ')
     {
         i++;
         sim++;
     }
-    condition_fp.insert(0, str, i - sim, sim);
+    state_fp.insert(0, str, i - sim, sim);
     *index = i;
-    if(condition_fp == condition)
+    if(state_fp == state)
         return 0;
     return -1;
 }
@@ -47,20 +61,20 @@ int skip_for_new_unit(string str)
     return i;
 }
 
-string get_condition_in_file(string str, int *index)
+string get_state_in_file(string str, int *index)
 {
     int i = *index;
     int sim = 0;
-    string condition;
+    string state;
     i = skip_space(str, i);
     while(str[i] != ' ')
     {
         i++;
         sim++;
     }
-    condition.insert(0, str, i - sim, sim);
+    state.insert(0, str, i - sim, sim);
     *index = i;
-    return condition;
+    return state;
 }
 
 string get_value_in_file(string str, int *index)
@@ -79,14 +93,15 @@ string get_value_in_file(string str, int *index)
     return value;
 }
 
-int seek_unit_in_file(ifstream *fp, string *condition, string *value)
+int seek_unit_in_file(ifstream *fp, string *state, string *value)
 {
     string str;
     int check = 0, i = 0;
+    (*fp).seekg(0, ios::beg);
     while(getline((*fp), str))
     {
         i = 0;
-        if(seek_condition_in_file(str, *condition, &i) == 0)
+        if(seek_state_in_file(str, *state, &i) == 0)
         {
             if(seek_value_in_file(str, *value, &i) == 0)
             {
@@ -99,7 +114,7 @@ int seek_unit_in_file(ifstream *fp, string *condition, string *value)
         return -1;
 
     i = skip_for_new_unit(str);
-    *condition = get_condition_in_file(str, &i);
+    *state = get_state_in_file(str, &i);
     *value = get_value_in_file(str, &i);
 
     return 0;

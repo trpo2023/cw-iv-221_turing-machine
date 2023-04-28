@@ -1,4 +1,6 @@
-#include "changes_according_to_the_rules.hpp"
+#include <fstream>
+#include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -9,7 +11,7 @@ int skip_space(string str, int i)
     return i;
 }
 
-int skip_condition(string str, int *index)
+int skip_state(string str, int *index)
 {
     int i = *index;
     i = skip_space(str, i);
@@ -83,13 +85,13 @@ int check_end(string str, int *index)
 
 int check_line(string str, int *column)
 {
-    if(skip_condition(str, column) != 0)
+    if(skip_state(str, column) != 0)
         return -1;
     if(check_value(str, column) != 0)
         return -2;
     if(check_arrow(str, column) != 0)
         return -3;
-    if(skip_condition(str, column) != 0)
+    if(skip_state(str, column) != 0)
         return -1;
     if(check_value(str, column) != 0)
         return -2;

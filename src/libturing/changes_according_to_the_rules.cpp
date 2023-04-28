@@ -2,25 +2,11 @@
 
 using namespace std;
 
-int rule_changes(string file_name, string *condition, string *value)
+int rule_changes(ifstream *fp, string *state, string *value)
 {
-    ifstream fp;
     int rez;
-    fp.open(file_name);
-    if(!fp)
-    {
-        cout << "File error - can't open to read data!" << endl;
-        fp.close();
-        return -1;
-    }
     
-    rez = check_file(&fp);
-    fp.close();
-    fp.open(file_name);
-    if(rez == 0)
-        rez = seek_unit_in_file(&fp, condition, value);
-    else
-        return -1;
+    rez = seek_unit_in_file(fp, state, value);
     
     if(rez != 0)
     {
@@ -32,17 +18,17 @@ int rule_changes(string file_name, string *condition, string *value)
 
 // int main(int argc, char *argv[])
 // {
-//     string condition, value;
-//     condition = "v";
+//     string state, value;
+//     state = "v";
 //     value = "4";
-//     if(rule_changes(argv[1], &condition, &value) == -1)
+//     if(rule_changes(argv[1], &state, &value) == -1)
 //     {
 //         cout << "no" << endl;
 //         return -1;
 //     }
 //     else
 //         cout << "yes" << endl;
-//     cout << "New condition: " << condition << endl;
+//     cout << "New condition: " << state << endl;
 //     cout << "New value: " << value << endl;
 //     return 0;
 // }

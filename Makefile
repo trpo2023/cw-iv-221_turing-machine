@@ -1,3 +1,5 @@
+CC = g++
+
 APP_NAME = turing
 LIB_NAME = libturing
 INPUT_NAME = input
@@ -24,7 +26,7 @@ THIRDPARTY_PATH = $(THIRDPARTY_DIR)
 RULES_PATH = $(DATA_DIR)/$(RULES_NAME)
 INPUT_PATH = $(DATA_DIR)/$(INPUT_NAME)
 
-SRC_EXT = c
+SRC_EXT = cpp
 
 APP_SOURCES = $(shell find $(SRC_DIR)/$(APP_NAME) -name '*.$(SRC_EXT)')
 APP_OBJECTS = $(APP_SOURCES:$(SRC_DIR)/%.$(SRC_EXT)=$(OBJ_DIR)/$(SRC_DIR)/%.o)
@@ -48,7 +50,7 @@ $(APP_PATH): $(APP_OBJECTS) $(LIB_PATH)
 $(LIB_PATH): $(LIB_OBJECTS)
 	ar rcs $@ $^
 
-$(OBJ_DIR)/%.o: %.c
+$(OBJ_DIR)/%.o: %.cpp
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
 .PHONY: clean
@@ -59,7 +61,7 @@ clean:
 
 .PHONY: run
 run: $(APP_PATH)
-	./$(APP_PATH) $(RULES_PATH) $(INPUT_PATH);
+	./$(APP_PATH) ./$(RULES_PATH) ./$(INPUT_PATH)
 
 .PHONY: test
 test:  $(TEST_PATH)

@@ -2,58 +2,58 @@
 #include <iostream>
 #include <string>
 
+#include "file_validation_check.hpp"
+
 using namespace std;
 
 int skip_space(string str, int i)
 {
-    while(str[i] == ' ')
+    while (str[i] == ' ')
         i++;
     return i;
 }
 
-int skip_state(string str, int *index)
+int skip_state(string str, int* index)
 {
     int i = *index;
     i = skip_space(str, i);
-    while(str[i] != ' ' && str[i] != '\0')
+    while (str[i] != ' ' && str[i] != '\0')
         i++;
     *index = i;
-    if(str[i] == '\0')
+    if (str[i] == '\0')
         return -1;
     return 0;
 }
 
 int check_number(char c)
 {
-    if(c < 48 || c > 57)
+    if (c < 48 || c > 57)
         return -1;
     return 0;
 }
 
-int check_value(string str, int *index)
+int check_value(string str, int* index)
 {
     int i = *index;
     i = skip_space(str, i);
-    while(check_number(str[i]) == 0)
+    while (check_number(str[i]) == 0)
         i++;
     *index = i;
-    if(str[i] != ' ' && str[i] != '-')
+    if (str[i] != ' ' && str[i] != '-')
         return -1;
     return 0;
 }
 
-int check_arrow(string str, int *index)
+int check_arrow(string str, int* index)
 {
     int i = *index;
     i = skip_space(str, i);
-    if(str[i] != '-')
-    {
+    if (str[i] != '-') {
         *index = i;
         return -1;
     }
     i++;
-    if(str[i] != '>')
-    {
+    if (str[i] != '>') {
         *index = i;
         return -1;
     }
@@ -62,44 +62,44 @@ int check_arrow(string str, int *index)
     return 0;
 }
 
-int check_shift(string str, int *index)
+int check_shift(string str, int* index)
 {
     int i = *index;
     char c;
     i = skip_space(str, i);
     c = str[i];
-    if(c != 'R' && c != 'r' && c != 'N' && c != 'n' && c != 'L' && c != 'l')
+    if (c != 'R' && c != 'r' && c != 'N' && c != 'n' && c != 'L' && c != 'l')
         return -1;
     *index = ++i;
     return 0;
 }
 
-int check_end(string str, int *index)
+int check_end(string str, int* index)
 {
     int i = *index;
     i = skip_space(str, i);
-    if(str[i] != '\0' && str[i] != '\n' && str[i] != '\r')
+    if (str[i] != '\0' && str[i] != '\n' && str[i] != '\r')
         return -1;
     return 0;
 }
 
-int check_line(string str, int *column)
+int check_line(string str, int* column)
 {
-    if(skip_state(str, column) != 0)
+    if (skip_state(str, column) != 0)
         return -1;
-    if(check_value(str, column) != 0)
+    if (check_value(str, column) != 0)
         return -2;
-    if(check_arrow(str, column) != 0)
+    if (check_arrow(str, column) != 0)
         return -3;
-    if(skip_state(str, column) != 0)
+    if (skip_state(str, column) != 0)
         return -1;
-    if(check_value(str, column) != 0)
+    if (check_value(str, column) != 0)
         return -2;
-    if(check_shift(str, column) != 0)
+    if (check_shift(str, column) != 0)
         return -4;
-    if(check_end(str, column) != 0)
+    if (check_end(str, column) != 0)
         return -5;
-    
+
     return 0;
 }
 
@@ -115,43 +115,32 @@ void error_locate(string str, int column)
 
 void error_output(string str, int column, int num, int mode)
 {
-    if(mode == -1)
-    {
-        error_locate(str, column);
-        cout << "Error in the shift rules file at string " << num << " , column " << column << ": incomplete data" << endl;
+    string error;
+    if (mode == -1) {
+        error = ERROR_INCOMPLETE_DATA;
+    } else if (mode == -2) {
+        error = ERROR_INVALID_VALUE;
+    } else if (mode == -3) {
+        error = ERROR_EXCPECTED_DELIM;
+    } else if (mode == -4) {
+        error = ERROR_EXCPECTED_SHIFT_MODE;
+    } else if (mode == -5) {
+        error = ERROR_UNEXCPECTED_TOKEN;
     }
-    if(mode == -2)
-    {
-        error_locate(str, column);
-        cout << "Error in the shift rules file at string " << num << " , column " << column << ": invalid value. Expected <int>" << endl;
-    }
-    if(mode == -3)
-    {
-        error_locate(str, column);
-        cout << "Error in the shift rules file at string " << num << " , column " << column << ": expected \"->\"" << endl;
-    }
-    if(mode == -4)
-    {
-        error_locate(str, column);
-        cout << "Error in the shift rules file at string " << num << " , column " << column << ": expected shift mode (R, L or N)" << endl;
-    }
-    if(mode == -5)
-    {
-        error_locate(str, column);
-        cout << "Error in the shift rules file at string " << num << " , column " << column << ": unexpected token" << endl;
-    }
+
+    error_locate(str, column);
+    cout << ERROR_IN_RULES << num + 1 << " column " << column << ": " << error
+         << endl;
 }
 
-int check_file(ifstream *fp)
+int check_file(ifstream* fp)
 {
     string str;
     int rez, all = 0, column, i = 1;
-    while(getline((*fp), str))
-    {
+    while (getline((*fp), str)) {
         column = 0;
         rez = check_line(str, &column);
-        if(rez != 0)
-        {
+        if (rez != 0) {
             error_output(str, column, i, rez);
             all = -1;
         }

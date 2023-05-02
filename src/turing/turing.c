@@ -1,6 +1,0 @@
-// includes
-
-int main()
-{
-    return 0;
-}

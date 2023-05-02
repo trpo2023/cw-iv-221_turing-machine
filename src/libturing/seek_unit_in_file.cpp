@@ -2,38 +2,36 @@
 
 using namespace std;
 
-int seek_state_in_file(string str, string state, int *index)
+int seek_state_in_file(string str, string state, int* index)
 {
     int i = *index;
     int sim = 0;
     i = skip_space(str, i);
     string state_fp;
-    while(str[i] != ' ')
-    {
+    while (str[i] != ' ') {
         i++;
         sim++;
     }
     state_fp.insert(0, str, i - sim, sim);
     *index = i;
-    if(state_fp == state)
+    if (state_fp == state)
         return 0;
     return -1;
 }
 
-int seek_value_in_file(string str, string value, int *index)
+int seek_value_in_file(string str, string value, int* index)
 {
     string value_fp;
     int i = *index;
     int sim = 0;
     i = skip_space(str, i);
-    while(check_number(str[i]) == 0)
-    {
+    while (check_number(str[i]) == 0) {
         i++;
         sim++;
     }
     value_fp.insert(0, str, i - sim, sim);
     *index = i;
-    if(value_fp == value)
+    if (value_fp == value)
         return 0;
     return -1;
 }
@@ -41,20 +39,19 @@ int seek_value_in_file(string str, string value, int *index)
 int skip_for_new_unit(string str)
 {
     int i = 0;
-    while(str[i] != '>')
+    while (str[i] != '>')
         i++;
     i++;
     return i;
 }
 
-string get_state_in_file(string str, int *index)
+string get_state_in_file(string str, int* index)
 {
     int i = *index;
     int sim = 0;
     string state;
     i = skip_space(str, i);
-    while(str[i] != ' ')
-    {
+    while (str[i] != ' ') {
         i++;
         sim++;
     }
@@ -63,14 +60,13 @@ string get_state_in_file(string str, int *index)
     return state;
 }
 
-string get_value_in_file(string str, int *index)
+string get_value_in_file(string str, int* index)
 {
     int i = *index;
     int sim = 0;
     string value;
     i = skip_space(str, i);
-    while(check_number(str[i]) == 0)
-    {
+    while (check_number(str[i]) == 0) {
         i++;
         sim++;
     }
@@ -79,38 +75,35 @@ string get_value_in_file(string str, int *index)
     return value;
 }
 
-int get_shift(string str, int *index)
+int get_shift(string str, int* index)
 {
     int i = *index;
     char c;
     i = skip_space(str, i);
     c = str[i];
-    if(c == 'L' || c == 'l')
+    if (c == 'L' || c == 'l')
         return -1;
-    if(c == 'N' || c == 'n')
+    if (c == 'N' || c == 'n')
         return 0;
     return 1;
 }
 
-int seek_unit_in_file(ifstream *fp, string *state, string *value)
+int seek_unit_in_file(ifstream* fp, string* state, string* value)
 {
     string str;
     int check = 0, i = 0;
     (*fp).clear();
     (*fp).seekg(0, ios::beg);
-    while(getline((*fp), str))
-    {
+    while (getline((*fp), str)) {
         i = 0;
-        if(seek_state_in_file(str, *state, &i) == 0)
-        {
-            if(seek_value_in_file(str, *value, &i) == 0)
-            {
+        if (seek_state_in_file(str, *state, &i) == 0) {
+            if (seek_value_in_file(str, *value, &i) == 0) {
                 check = 1;
                 break;
             }
         }
     }
-    if(check == 0)
+    if (check == 0)
         return -2;
 
     i = skip_for_new_unit(str);

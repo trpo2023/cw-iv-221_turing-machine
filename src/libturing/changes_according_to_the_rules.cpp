@@ -5,9 +5,9 @@ using namespace std;
 // int rule_changes(ifstream *fp, string *state, string *value)
 // {
 //     int rez;
-    
+
 //     rez = seek_unit_in_file(fp, state, value);
-    
+
 //     if(rez == -2)
 //     {
 //         cout << "Rule not found!" << endl;

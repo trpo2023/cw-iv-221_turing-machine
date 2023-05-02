@@ -2,20 +2,6 @@
 
 using namespace std;
 
-int skip_space(string str, int i)
-{
-    while(str[i] == ' ')
-        i++;
-    return i;
-}
-
-int check_number(char c)
-{
-    if(c < 48 || c > 57)
-        return -1;
-    return 0;
-}
-
 int seek_state_in_file(string str, string state, int *index)
 {
     int i = *index;
@@ -93,10 +79,24 @@ string get_value_in_file(string str, int *index)
     return value;
 }
 
+int get_shift(string str, int *index)
+{
+    int i = *index;
+    char c;
+    i = skip_space(str, i);
+    c = str[i];
+    if(c == 'L' || c == 'l')
+        return -1;
+    if(c == 'N' || c == 'n')
+        return 0;
+    return 1;
+}
+
 int seek_unit_in_file(ifstream *fp, string *state, string *value)
 {
     string str;
     int check = 0, i = 0;
+    (*fp).clear();
     (*fp).seekg(0, ios::beg);
     while(getline((*fp), str))
     {
@@ -111,11 +111,11 @@ int seek_unit_in_file(ifstream *fp, string *state, string *value)
         }
     }
     if(check == 0)
-        return -1;
+        return -2;
 
     i = skip_for_new_unit(str);
     *state = get_state_in_file(str, &i);
     *value = get_value_in_file(str, &i);
 
-    return 0;
+    return get_shift(str, &i);
 }

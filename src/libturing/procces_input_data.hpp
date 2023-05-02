@@ -8,5 +8,5 @@
 #define RULES_FILE_ARGUMENT 2
 #define INPUT_FILE_ARGUMENT 3
 
-int process_input_console(std::ifstream *rule);
+int process_input_console(std::ifstream *rule, std::string *res);
 int process_input_file(std::ifstream *rule, std::fstream *input);

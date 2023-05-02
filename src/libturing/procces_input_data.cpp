@@ -38,7 +38,7 @@ int process_input_file(ifstream *rule, fstream *input)
     return 0;
 }
 
-int process_input_console(ifstream *rule, string res)
+int process_input_console(ifstream *rule, string *res)
 {
     string state = BEG_STATE;
 
@@ -68,6 +68,6 @@ int process_input_console(ifstream *rule, string res)
             break;
         }
     }
-    res = str;
+    *res = str;
     return 0;
 }

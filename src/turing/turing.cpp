@@ -46,7 +46,8 @@ int main(int argc, char** argv)
         process_input_file(&rules_file, &input_file);
         input_file.close();
     } else {
-        process_input_console(&rules_file);
+        string res;
+        process_input_console(&rules_file, &res);
     }
 
     rules_file.close();

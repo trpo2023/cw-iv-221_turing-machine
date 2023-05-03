@@ -48,6 +48,7 @@ int main(int argc, char** argv)
     } else {
         string res;
         process_input_console(&rules_file, &res);
+        cout << res << endl;
     }
 
     rules_file.close();

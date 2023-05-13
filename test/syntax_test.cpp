@@ -50,7 +50,7 @@ CTEST(syntax_suite, check_shift_true)
     ASSERT_FALSE(check_shift(s5, &index));
 
     index = 0;
-    ASSERT_FALSE(check_shift(s6, &index));   
+    ASSERT_FALSE(check_shift(s6, &index));
 }
 
 CTEST(syntax_suite, check_shift_false)
@@ -58,5 +58,5 @@ CTEST(syntax_suite, check_shift_false)
     std::string s1 = "A";
     int index = 0;
 
-    ASSERT_TRUE(check_shift(s1, &index));  
+    ASSERT_TRUE(check_shift(s1, &index));
 }

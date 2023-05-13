@@ -3,7 +3,7 @@
 #include "changes_according_to_the_rules.hpp"
 #include "procces_input_data.hpp"
 
-int process_input_file(ifstream* rule, fstream* input)
+int process_input_file(ifstream* rule, ifstream* input, string* res)
 {
     string state = BEG_STATE;
     string str, value;
@@ -32,9 +32,7 @@ int process_input_file(ifstream* rule, fstream* input)
         }
     }
 
-    input->clear();
-    input->seekg(0);
-    *input << str;
+    *res = str;
     return 0;
 }
 

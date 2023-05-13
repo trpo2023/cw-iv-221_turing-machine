@@ -10,3 +10,4 @@
 int check_arrow(std::string str, int* index);
 int check_shift(std::string str, int* index);
 int check_value(std::string str, int* index);
+int check_end(std::string str, int* index);

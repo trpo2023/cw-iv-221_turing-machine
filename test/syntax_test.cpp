@@ -60,3 +60,19 @@ CTEST(syntax_suite, check_shift_false)
 
     ASSERT_TRUE(check_shift(s1, &index));
 }
+
+CTEST(syntax_suite, check_end_true)
+{
+    std::string s1 = "q_b 2 -> q_e 3";
+    int index = 14;
+
+    ASSERT_FALSE(check_end(s1, &index));
+}
+
+CTEST(syntax_suite, check_end_false)
+{
+    std::string s1 = "q_b 2 -> q_e 3 f";
+    int index = 14;
+
+    ASSERT_TRUE(check_end(s1, &index));
+}

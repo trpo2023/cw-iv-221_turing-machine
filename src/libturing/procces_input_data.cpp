@@ -8,7 +8,7 @@ int process_string(ifstream* rule, string* data, string* res)
     string state = BEG_STATE;
     string str = *data, value;
     int i = 0, next = 0;
-    
+
     while (1) {
         value = str[i];
         if ((next = seek_unit_in_file(rule, &state, &value)) == -2) {
@@ -47,6 +47,6 @@ int process_input_console(ifstream* rule, string* res)
     string str;
     cout << "Enter the line: ";
     getline(cin, str);
-    
+
     return process_string(rule, &str, res);
 }

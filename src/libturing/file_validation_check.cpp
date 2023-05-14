@@ -13,7 +13,7 @@ int skip_space(string str, int i)
     return i;
 }
 
-int skip_state(string str, int* index)
+int skip_unit(string str, int* index)
 {
     int i = *index;
     i = skip_space(str, i);
@@ -25,24 +25,17 @@ int skip_state(string str, int* index)
     return 0;
 }
 
-int check_number(char c)
-{
-    if (c < 48 || c > 57)
-        return -1;
-    return 0;
-}
-
-int check_value(string str, int* index)
-{
-    int i = *index;
-    i = skip_space(str, i);
-    while (check_number(str[i]) == 0)
-        i++;
-    *index = i;
-    if (str[i] != ' ' && str[i] != '-')
-        return -1;
-    return 0;
-}
+// int skip_value(string str, int* index)
+// {
+//     int i = *index;
+//     i = skip_space(str, i);
+//     while (check_number(str[i]) == 0)
+//         i++;
+//     *index = i;
+//     if (str[i] != ' ' && str[i] != '-')
+//         return -1;
+//     return 0;
+// }
 
 int check_arrow(string str, int* index)
 {
@@ -85,15 +78,15 @@ int check_end(string str, int* index)
 
 int check_line(string str, int* column)
 {
-    if (skip_state(str, column) != 0)
+    if (skip_unit(str, column) != 0)
         return -1;
-    if (check_value(str, column) != 0)
+    if (skip_unit(str, column) != 0)
         return -2;
     if (check_arrow(str, column) != 0)
         return -3;
-    if (skip_state(str, column) != 0)
+    if (skip_unit(str, column) != 0)
         return -1;
-    if (check_value(str, column) != 0)
+    if (skip_unit(str, column) != 0)
         return -2;
     if (check_shift(str, column) != 0)
         return -4;

@@ -16,7 +16,7 @@ int main(int argc, char** argv)
     for (int i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-o") == 0) {
             if (i + 1 == argc) {
-                cout << "E" << endl;
+                cout << ERROR_OUTPUTFILE_NOT_SPECIFIED << endl;
                 return -1;
             }
             out = ++i;
